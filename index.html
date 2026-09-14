@@ -1,73 +1,133 @@
 <!DOCTYPE html><html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>QuickKhaana - Bijapur</title>
+<title>QuickKhaana PRO - Bijapur</title>
+<link rel="icon" href="logo.png">
 <style>
-body{margin:0;font-family:Arial;background:#fff8f0;padding-bottom:95px}
-.top{background:#ff3d00;color:#fff;padding:14px;text-align:center;font-weight:bold;position:sticky;top:0;z-index:20}
-.banner{margin:12px;background:linear-gradient(135deg,#ff3d00,#ff8a00);color:#fff;border-radius:14px;padding:14px}
-.hotels{display:flex;gap:8px;overflow-x:auto;padding:8px 12px}
-.hbtn{white-space:nowrap;background:#fff;border:1.5px solid #ff3d00;color:#ff3d00;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:bold}
+body{margin:0;font-family:Arial;background:#f5f5f5;padding-bottom:120px}
+.top{background:#ff3d00;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
+.top img{width:36px;height:36px;border-radius:8px;background:#fff}
+.filters{background:#fff;padding:10px 12px;display:flex;gap:8px;position:sticky;top:56px;z-index:20;box-shadow:0 2px 4px #0001}
+.fbtn{padding:6px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;font-size:12px;font-weight:bold}
+.fbtn.veg.active{border-color:#2e7d32;color:#2e7d32;background:#e8f5e9}
+.fbtn.nveg.active{border-color:#c62828;color:#c62828;background:#ffebee}
+.fbtn.all.active{background:#ff3d00;color:#fff;border-color:#ff3d00}
+.hotels{display:flex;gap:8px;overflow-x:auto;padding:8px 12px;background:#fff;margin-top:6px}
+.hbtn{white-space:nowrap;background:#fff;border:1.5px solid #ff3d00;color:#ff3d00;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:bold}
 .hbtn.active{background:#ff3d00;color:#fff}
-.card{background:#fff;margin:8px 12px;border-radius:12px;display:flex;box-shadow:0 2px 8px #0001;overflow:hidden}
+.card{background:#fff;margin:8px 12px;border-radius:12px;display:flex;box-shadow:0 2px 8px #0001;overflow:hidden;position:relative}
 .card img{width:90px;height:90px;object-fit:cover}
+.vdot{position:absolute;top:6px;left:6px;width:14px;height:14px;border:1px solid #2e7d32;display:flex;align-items:center;justify-content:center;background:#fff}
+.vdot span{width:8px;height:8px;background:#2e7d32;border-radius:50%;display:block}
+.vdot.nv{border-color:#c62828}.vdot.nv span{background:#c62828}
 .info{padding:8px;flex:1}
-.info h3{margin:0;font-size:13px}
-.info small{font-size:10px;color:#888}
-.price{color:#ff3d00;font-weight:bold;font-size:13px}
+.price{color:#ff3d00;font-weight:bold}
 .ctrl{float:right;display:flex;align-items:center;gap:5px}
 .add{background:#ff3d00;color:#fff;border:0;padding:5px 12px;border-radius:20px;font-weight:bold;font-size:11px}
 .qbtn{background:#fff;color:#ff3d00;border:1.5px solid #ff3d00;width:24px;height:24px;border-radius:50%;font-weight:bold}
-.cart{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:10px 12px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
-.cart button{background:#25D366;color:#fff;border:0;padding:10px 14px;border-radius:8px;font-weight:bold}
+.cart{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:10px 12px;border-top:2px solid #ff3d00;display:flex;justify-content:space-between;align-items:center}
+.cart button{background:#25D366;color:#fff;border:0;padding:10px 16px;border-radius:8px;font-weight:bold}
+.modal{position:fixed;inset:0;background:#0008;display:none;z-index:50;align-items:center;justify-content:center;padding:14px}
+.modal.show{display:flex}
+.box{background:#fff;width:100%;max-width:380px;border-radius:14px;padding:16px;max-height:90vh;overflow:auto}
+.box input{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ddd;box-sizing:border-box}
+.track{display:flex;justify-content:space-between;margin:14px 0}
+.tstep{text-align:center;font-size:10px;flex:1}
+.tdot{width:28px;height:28px;border-radius:50%;background:#eee;margin:0 auto 4px;display:flex;align-items:center;justify-content:center}
+.tdot.on{background:#ff3d00;color:#fff}
 </style></head><body>
-<div class="top">quickkhaana - BIJAPUR | 15+ Hotels 🔥</div>
-<div class="banner"><b id="hName">All Hotels</b> - Bijapur ka Swad!<br><small id="hCount">Live</small></div>
+<div class="top"><div style="display:flex;align-items:center;gap:8px"><img src="logo.png" onerror="this.src='https://via.placeholder.com/36'"><b>QuickKhaana PRO</b></div><span style="font-size:11px" onclick="showOrders()">📦 Orders</span></div>
+
+<div class="filters">
+<button class="fbtn all active" id="fAll" onclick="setType('all')">All</button>
+<button class="fbtn veg" id="fVeg" onclick="setType('veg')">🟢 Veg Only</button>
+<button class="fbtn nveg" id="fNveg" onclick="setType('nveg')">🔴 Non-Veg</button>
+<span style="margin-left:auto;font-size:11px;color:#666" id="hName">All Hotels</span>
+</div>
+
 <div class="hotels" id="bar"></div>
 <div id="menu"></div>
-<div class="cart"><div><b id="tot">Rs 0</b> <span id="cnt">0 items</span><br><small id="list">Cart empty</small></div><button onclick="wa()">WhatsApp Order</button></div>
+
+<div class="cart"><div><b id="tot">Rs 0</b> <span id="cnt">0 items</span><br><small id="list" style="font-size:10px">Cart empty</small></div><button onclick="openOrder()">Order Now</button></div>
+
+<!-- Order Modal -->
+<div class="modal" id="orderModal">
+<div class="box">
+<h3 style="margin:0">Order Details</h3>
+<small style="color:#666">Restaurant tak notify jayega</small>
+<input id="cName" placeholder="Aapka Naam *">
+<input id="cPhone" placeholder="Mobile Number *" type="tel">
+<input id="cAddr" placeholder="Full Delivery Address *">
+<div id="orderSum" style="background:#fff8f0;padding:8px;border-radius:8px;margin:8px 0;font-size:12px"></div>
+<button onclick="placeOrder()" style="width:100%;background:#25D366;color:#fff;border:0;padding:12px;border-radius:8px;font-weight:bold;font-size:14px">Confirm & WhatsApp Restaurant</button>
+<button onclick="closeM('orderModal')" style="width:100%;background:#eee;border:0;padding:8px;border-radius:8px;margin-top:6px">Cancel</button>
+</div>
+</div>
+
+<!-- Tracking Modal -->
+<div class="modal" id="trackModal">
+<div class="box">
+<h3 id="trackTitle" style="margin:0">Order Tracking</h3>
+<div id="trackId" style="font-size:12px;color:#666"></div>
+<div class="track">
+<div class="tstep"><div class="tdot on" id="d1">✓</div>Placed</div>
+<div class="tstep"><div class="tdot" id="d2">2</div>Accepted</div>
+<div class="tstep"><div class="tdot" id="d3">3</div>Cooking</div>
+<div class="tstep"><div class="tdot" id="d4">4</div>On Way</div>
+<div class="tstep"><div class="tdot" id="d5">5</div>Delivered</div>
+</div>
+<div id="trackDetails" style="font-size:12px;background:#f9f9f9;padding:10px;border-radius:8px"></div>
+<button onclick="simulate()" style="width:100%;background:#ff3d00;color:#fff;border:0;padding:10px;border-radius:8px;margin-top:10px">Next Update (Demo)</button>
+<button onclick="closeM('trackModal')" style="width:100%;background:#eee;border:0;padding:8px;border-radius:8px;margin-top:6px">Close</button>
+</div>
+</div>
+
 <script>
-const hotels=["All Hotels","Anna Idli - Zudio","Subhashree Hotel","Madhuvan Intl","Basava Residency","Kanishka","Hotel Samrat","Al-Shayan Mandi","Kamadhenu","Godavari","Nalpak","Greenland","Food Zone","Sigdi","Amruta"];
+const hotels=["All Hotels","Anna Idli - Zudio","Subhashree Hotel","Madhuvan Intl","Basava Residency","Kanishka","Hotel Samrat","Al-Shayan Mandi","Kamadhenu","Godavari","Nalpak","Greenland"];
 const dishes=[
-{h:"Anna Idli - Zudio",n:"Thatte Idli (2 pcs)",p:49,i:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=200"},
-{h:"Anna Idli - Zudio",n:"Medu Vada Sambar",p:59,i:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200"},
-{h:"Anna Idli - Zudio",n:"Masala Dosa",p:89,i:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=200"},
-{h:"Subhashree Hotel",n:"Veg Thali Special",p:149,i:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200"},
-{h:"Subhashree Hotel",n:"Paneer Biryani",p:199,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
-{h:"Subhashree Hotel",n:"Gobi Manchurian",p:129,i:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200"},
-{h:"Madhuvan Intl",n:"Chicken Biryani",p:279,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
-{h:"Basava Residency",n:"Jowar Roti Thali",p:129,i:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=200"},
-{h:"Kanishka",n:"Chicken Mandi Biryani",p:299,i:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200"},
-{h:"Hotel Samrat",n:"Mutton Biryani",p:349,i:"https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=200"},
-{h:"Al-Shayan Mandi",n:"Mutton Mandi Full",p:549,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
-{h:"Al-Shayan Mandi",n:"Chicken Al-Faham",p:399,i:"https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200"},
-{h:"Kamadhenu",n:"Veg Fried Rice",p:99,i:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200"},
-{h:"Godavari",n:"Andhra Chicken Curry",p:229,i:"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200"},
-{h:"Greenland",n:"Pav Bhaji",p:79,i:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200"},
+{h:"Anna Idli - Zudio",n:"Thatte Idli (2 pcs)",p:49,v:true,i:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=200"},
+{h:"Anna Idli - Zudio",n:"Medu Vada Sambar",p:59,v:true,i:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200"},
+{h:"Anna Idli - Zudio",n:"Masala Dosa",p:89,v:true,i:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=200"},
+{h:"Subhashree Hotel",n:"Veg Thali Special",p:149,v:true,i:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200"},
+{h:"Subhashree Hotel",n:"Paneer Biryani",p:199,v:true,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
+{h:"Subhashree Hotel",n:"Gobi Manchurian",p:129,v:true,i:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200"},
+{h:"Madhuvan Intl",n:"Chicken Biryani",p:279,v:false,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
+{h:"Basava Residency",n:"Jowar Roti Thali",p:129,v:true,i:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=200"},
+{h:"Kanishka",n:"Chicken Mandi Biryani",p:299,v:false,i:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200"},
+{h:"Hotel Samrat",n:"Mutton Biryani",p:349,v:false,i:"https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=200"},
+{h:"Al-Shayan Mandi",n:"Mutton Mandi Full",p:549,v:false,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
+{h:"Al-Shayan Mandi",n:"Chicken Al-Faham",p:399,v:false,i:"https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200"},
+{h:"Kamadhenu",n:"Veg Fried Rice",p:99,v:true,i:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200"},
+{h:"Godavari",n:"Andhra Chicken Curry",p:229,v:false,i:"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200"},
+{h:"Greenland",n:"Pav Bhaji",p:79,v:true,i:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200"},
 ];
-let cart={}, sel="All Hotels";
-let b=document.getElementById('bar');
-hotels.forEach(h=>{let btn=document.createElement('button');btn.className='hbtn'+(h==sel?' active':'');btn.innerText=h;btn.onclick=()=>{sel=h;document.querySelectorAll('.hbtn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render();};b.appendChild(btn);});
+let cart={}, sel="All Hotels", ftype="all", curOrder=null, step=1;
+let bar=document.getElementById('bar');
+hotels.forEach(h=>{let b=document.createElement('button');b.className='hbtn'+(h==sel?' active':'');b.innerText=h;b.onclick=()=>{sel=h;document.querySelectorAll('.hbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');render();};bar.appendChild(b);});
+function setType(t){ftype=t;document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));document.getElementById(t=='all'?'fAll':t=='veg'?'fVeg':'fNveg').classList.add('active');render();}
 function render(){
  document.getElementById('hName').innerText=sel;
- let f=sel=="All Hotels"?dishes:dishes.filter(d=>d.h==sel);
- document.getElementById('hCount').innerText=f.length+" Dishes • "+sel;
+ let f=dishes.filter(d=>(sel=="All Hotels"||d.h==sel)&&(ftype=='all'||(ftype=='veg'&&d.v)||(ftype=='nveg'&&!d.v)));
  let m=document.getElementById('menu');m.innerHTML='';
  f.forEach(d=>{
    let c=cart[d.n]?`<button class="qbtn" onclick="chg('${d.n}',${d.p},-1)">-</button><b>${cart[d.n].qty}</b><button class="qbtn" onclick="chg('${d.n}',${d.p},1)">+</button>`:`<button class="add" onclick="chg('${d.n}',${d.p},1)">Add</button>`;
-   m.innerHTML+=`<div class="card"><img src="${d.i}"><div class="info"><h3>${d.n}</h3><small>${d.h}</small><div style="margin-top:6px"><span class="price">Rs ${d.p}</span><span class="ctrl">${c}</span></div></div></div>`;
+   m.innerHTML+=`<div class="card"><div class="vdot ${d.v?'':'nv'}"><span></span></div><img src="${d.i}"><div class="info"><h3 style="margin:0;font-size:13px">${d.n}</h3><small style="font-size:10px;color:#888">${d.h} • ${d.v?'Veg':'Non-Veg'}</small><div style="margin-top:6px"><span class="price">Rs ${d.p}</span><span class="ctrl">${c}</span></div></div></div>`;
  });
 }
 function chg(n,p,d){if(!cart[n])cart[n]={price:p,qty:0};cart[n].qty+=d;if(cart[n].qty<=0)delete cart[n];render();upd();}
-function upd(){
- let t=0,c=0,l=[];for(let k in cart){t+=cart[k].price*cart[k].qty;c+=cart[k].qty;l.push(k+' x'+cart[k].qty);}
- document.getElementById('tot').innerText='Rs '+t;document.getElementById('cnt').innerText=c+' items';document.getElementById('list').innerText=l.length?l.join(', '):'Cart empty';
-}
-function wa(){
- let t=0,c=0,msg='';for(let k in cart){t+=cart[k].price*cart[k].qty;c+=cart[k].qty;msg+=`• ${k} x${cart[k].qty} = Rs ${cart[k].price*cart[k].qty}%0A`;}
- if(!c){alert('Pehle Add karo bhai!');return;}
- let txt=`*QuickKhaana Bijapur - ${sel}*%0A%0A${msg}%0A*Total: Rs ${t}*%0A%0A_Delivery Address:_ `;
+function upd(){let t=0,c=0,l=[];for(let k in cart){t+=cart[k].price*cart[k].qty;c+=cart[k].qty;l.push(k+' x'+cart[k].qty);}document.getElementById('tot').innerText='Rs '+t;document.getElementById('cnt').innerText=c+' items';document.getElementById('list').innerText=l.length?l.join(', '):'Cart empty';}
+function openOrder(){let c=0;for(let k in cart)c+=cart[k].qty;if(!c){alert('Pehle Add karo!');return;}let t=0,html='';for(let k in cart){t+=cart[k].price*cart[k].qty;html+=`${k} x${cart[k].qty} = Rs ${cart[k].price*cart[k].qty}<br>`;}html+=`<b>Total Rs ${t}</b>`;document.getElementById('orderSum').innerHTML=html;document.getElementById('orderModal').classList.add('show');}
+function closeM(id){document.getElementById(id).classList.remove('show');}
+function placeOrder(){
+ let nm=document.getElementById('cName').value, ph=document.getElementById('cPhone').value, ad=document.getElementById('cAddr').value;
+ if(!nm||!ph||!ad){alert('Saare details bharo bhai!');return;}
+ let t=0,msg='';for(let k in cart){t+=cart[k].price*cart[k].qty;msg+=`• ${k} x${cart[k].qty} = Rs ${cart[k].price*cart[k].qty}%0A`;}
+ let oid='QK'+Date.now().toString().slice(-6);
+ curOrder={id:oid,name:nm,phone:ph,addr:ad,total:t,items:{...cart},hotel:sel,time:new Date().toLocaleString()};
+ localStorage.setItem('qk_last',JSON.stringify(curOrder));
+ step=1; updateTrack();
+ let txt=`*NEW ORDER ${oid} - QuickKhaana PRO*%0A%0AHotel: ${sel}%0A%0A${msg}%0A*Total: Rs ${t}*%0A%0ACustomer: ${nm}%0APhone: ${ph}%0AAddress: ${ad}%0A%0ATime: ${curOrder.time}`;
  window.open('https://wa.me/918073049760?text='+txt,'_blank');
+ closeM('orderModal'); cart={};render();upd();
+ document.getElementById('trackModal').classList.add('show');
 }
-render();
-</script>
-</body></html>
+function updateTrack(){if(!curOrder)return;document.getElementById('trackId').innerText='Order ID: '+curOrder.id+' | '+curOrder.time;for(let i=1;i<=5;i
