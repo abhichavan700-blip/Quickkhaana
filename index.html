@@ -1,50 +1,72 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>QuickKhaana - Bijapur</title>
 <style>
-body{margin:0;font-family:Arial;background:#fff8f0}
-.top{background:#ff3d00;color:#fff;padding:14px;text-align:center;font-weight:bold;position:sticky;top:0}
-.banner{margin:12px;background:linear-gradient(135deg,#ff3d00,#ff8a00);color:#fff;border-radius:14px;padding:16px}
-.card{background:#fff;margin:10px 12px;border-radius:12px;display:flex;box-shadow:0 2px 8px #0001;overflow:hidden}
-.card img{width:100px;height:100px;object-fit:cover}
-.info{padding:10px;flex:1}
-.info h3{margin:0;font-size:14px}
-.info p{margin:2px 0;font-size:11px;color:#666}
-.price{color:#ff3d00;font-weight:bold}
-.btn{background:#ff3d00;color:#fff;border:0;padding:6px 14px;border-radius:20px;float:right}
-.cart{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:12px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
-.cart button{background:#25D366;color:#fff;border:0;padding:10px 16px;border-radius:8px;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="top">quickkhaana - Bijapur | 30 min Delivery</div>
-<div class="banner"><h2 style="margin:0">Bijapur ka Swad,<br>Ghar Tak! 🔥</h2><p style="margin:4px 0 0;font-size:12px">Fresh • Hot • Free Delivery</p></div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200">
-<div class="info"><h3>Chicken Mandi Biryani</h3><p>Bijapur special dum biryani</p><div><span class="price">Rs 249</span><button class="btn" onclick="add(this,'Biryani',249)">Add</button></div></div>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200">
-<div class="info"><h3>Jowar Roti Thali</h3><p>2 Roti + Curry + Curd</p><div><span class="price">Rs 129</span><button class="btn" onclick="add(this,'Thali',129)">Add</button></div></div>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1603133872875-ca2a98a0c829?w=200">
-<div class="info"><h3>Veg Fried Rice</h3><p>Chinese style fried rice</p><div><span class="price">Rs 99</span><button class="btn" onclick="add(this,'Fried Rice',99)">Add</button></div></div>
-</div>
-
-<div style="height:80px"></div>
-<div class="cart"><div><b id="tot">Rs 0</b> - <span id="c">0 items</span><br><small id="l">Cart empty</small></div><button onclick="wa()">WhatsApp Order</button></div>
-
+body{margin:0;font-family:Arial;background:#fff8f0;padding-bottom:95px}
+.top{background:#ff3d00;color:#fff;padding:14px;text-align:center;font-weight:bold;position:sticky;top:0;z-index:20}
+.banner{margin:12px;background:linear-gradient(135deg,#ff3d00,#ff8a00);color:#fff;border-radius:14px;padding:14px}
+.hotels{display:flex;gap:8px;overflow-x:auto;padding:8px 12px}
+.hbtn{white-space:nowrap;background:#fff;border:1.5px solid #ff3d00;color:#ff3d00;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:bold}
+.hbtn.active{background:#ff3d00;color:#fff}
+.card{background:#fff;margin:8px 12px;border-radius:12px;display:flex;box-shadow:0 2px 8px #0001;overflow:hidden}
+.card img{width:90px;height:90px;object-fit:cover}
+.info{padding:8px;flex:1}
+.info h3{margin:0;font-size:13px}
+.info small{font-size:10px;color:#888}
+.price{color:#ff3d00;font-weight:bold;font-size:13px}
+.ctrl{float:right;display:flex;align-items:center;gap:5px}
+.add{background:#ff3d00;color:#fff;border:0;padding:5px 12px;border-radius:20px;font-weight:bold;font-size:11px}
+.qbtn{background:#fff;color:#ff3d00;border:1.5px solid #ff3d00;width:24px;height:24px;border-radius:50%;font-weight:bold}
+.cart{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:10px 12px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.cart button{background:#25D366;color:#fff;border:0;padding:10px 14px;border-radius:8px;font-weight:bold}
+</style></head><body>
+<div class="top">quickkhaana - BIJAPUR | 15+ Hotels 🔥</div>
+<div class="banner"><b id="hName">All Hotels</b> - Bijapur ka Swad!<br><small id="hCount">18 Dishes Live</small></div>
+<div class="hotels" id="bar"></div>
+<div id="menu"></div>
+<div class="cart"><div><b id="tot">Rs 0</b> <span id="cnt">0 items</span><br><small id="list">Cart empty</small></div><button onclick="wa()">WhatsApp Order</button></div>
 <script>
-let t=0,items=[];
-function add(b,n,p){items.push(n);t+=p;b.innerText='Added';document.getElementById('tot').innerText='Rs '+t;document.getElementById('c').innerText=items.length+' items';document.getElementById('l').innerText=items.join(', ')}
-function wa(){if(!t){alert('Pehle Add karo bhai!');return}let m='QuickKhaana Order:%0A'+items.join('%0A')+'%0ATotal Rs '+t;window.open('https://wa.me/919999999999?text='+m,'_blank')}
+const hotels=["All Hotels","Anna Idli - Zudio","Subhashree Hotel","Madhuvan Intl","Basava Residency","Kanishka","Hotel Samrat","Al-Shayan Mandi","Kamadhenu","Godavari","Nalpak","Greenland","Food Zone","Sigdi","Amruta"];
+const dishes=[
+{h:"Anna Idli - Zudio",n:"Thatte Idli (2 pcs)",p:49,i:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=200"},
+{h:"Anna Idli - Zudio",n:"Medu Vada Sambar",p:59,i:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200"},
+{h:"Anna Idli - Zudio",n:"Masala Dosa",p:89,i:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=200"},
+{h:"Subhashree Hotel",n:"Veg Thali Special",p:149,i:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200"},
+{h:"Subhashree Hotel",n:"Paneer Biryani",p:199,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
+{h:"Subhashree Hotel",n:"Gobi Manchurian",p:129,i:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200"},
+{h:"Madhuvan Intl",n:"Chicken Biryani",p:279,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
+{h:"Basava Residency",n:"Jowar Roti Thali",p:129,i:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=200"},
+{h:"Kanishka",n:"Chicken Mandi Biryani",p:299,i:"https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200"},
+{h:"Hotel Samrat",n:"Mutton Biryani",p:349,i:"https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=200"},
+{h:"Al-Shayan Mandi",n:"Mutton Mandi Full",p:549,i:"https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200"},
+{h:"Al-Shayan Mandi",n:"Chicken Al-Faham",p:399,i:"https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200"},
+{h:"Kamadhenu",n:"Veg Fried Rice",p:99,i:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200"},
+{h:"Godavari",n:"Andhra Chicken Curry",p:229,i:"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200"},
+{h:"Greenland",n:"Pav Bhaji",p:79,i:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200"},
+];
+let cart={}, sel="All Hotels";
+let b=document.getElementById('bar');
+hotels.forEach(h=>{let btn=document.createElement('button');btn.className='hbtn'+(h==sel?' active':'');btn.innerText=h;btn.onclick=()=>{sel=h;document.querySelectorAll('.hbtn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render();};b.appendChild(btn);});
+function render(){
+ document.getElementById('hName').innerText=sel;
+ let f=sel=="All Hotels"?dishes:dishes.filter(d=>d.h==sel);
+ document.getElementById('hCount').innerText=f.length+" Dishes • "+sel;
+ let m=document.getElementById('menu');m.innerHTML='';
+ f.forEach(d=>{
+   let c=cart[d.n]?`<button class="qbtn" onclick="chg('${d.n}',${d.p},-1)">-</button><b>${cart[d.n].qty}</b><button class="qbtn" onclick="chg('${d.n}',${d.p},1)">+</button>`:`<button class="add" onclick="chg('${d.n}',${d.p},1)">Add</button>`;
+   m.innerHTML+=`<div class="card"><img src="${d.i}"><div class="info"><h3>${d.n}</h3><small>${d.h}</small><div style="margin-top:6px"><span class="price">Rs ${d.p}</span><span class="ctrl">${c}</span></div></div></div>`;
+ });
+}
+function chg(n,p,d){if(!cart[n])cart[n]={price:p,qty:0};cart[n].qty+=d;if(cart[n].qty<=0)delete cart[n];render();upd();}
+function upd(){
+ let t=0,c=0,l=[];for(let k in cart){t+=cart[k].price*cart[k].qty;c+=cart[k].qty;l.push(k+' x'+cart[k].qty);}
+ document.getElementById('tot').innerText='Rs '+t;document.getElementById('cnt').innerText=c+' items';document.getElementById('list').innerText=l.length?l.join(', '):'Cart empty';
+}
+function wa(){
+ let t=0,c=0,msg='';for(let k in cart){t+=cart[k].price*cart[k].qty;c+=cart[k].qty;msg+=`• ${k} x${cart[k].qty} = Rs ${cart[k].price*cart[k].qty}%0A`;}
+ if(!c){alert('Pehle Add karo bhai!');return;}
+ let txt=`*QuickKhaana Bijapur - ${sel}*%0A%0A${msg}%0A*Total: Rs ${t}*`;window.open('https://wa.me/919999999999?text='+txt,'_blank');
+}
+render();
 </script>
-</body>
-</html>
+</body></html>
