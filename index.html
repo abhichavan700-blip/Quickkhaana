@@ -21,7 +21,7 @@ body{margin:0;font-family:Arial;background:#fff8f0;padding-bottom:95px}
 .cart button{background:#25D366;color:#fff;border:0;padding:10px 14px;border-radius:8px;font-weight:bold}
 </style></head><body>
 <div class="top">quickkhaana - BIJAPUR | 15+ Hotels 🔥</div>
-<div class="banner"><b id="hName">All Hotels</b> - Bijapur ka Swad!<br><small id="hCount">18 Dishes Live</small></div>
+<div class="banner"><b id="hName">All Hotels</b> - Bijapur ka Swad!<br><small id="hCount">Live</small></div>
 <div class="hotels" id="bar"></div>
 <div id="menu"></div>
 <div class="cart"><div><b id="tot">Rs 0</b> <span id="cnt">0 items</span><br><small id="list">Cart empty</small></div><button onclick="wa()">WhatsApp Order</button></div>
@@ -65,7 +65,8 @@ function upd(){
 function wa(){
  let t=0,c=0,msg='';for(let k in cart){t+=cart[k].price*cart[k].qty;c+=cart[k].qty;msg+=`• ${k} x${cart[k].qty} = Rs ${cart[k].price*cart[k].qty}%0A`;}
  if(!c){alert('Pehle Add karo bhai!');return;}
- let txt=`*QuickKhaana Bijapur - ${sel}*%0A%0A${msg}%0A*Total: Rs ${t}*`;window.open('https://wa.me/919999999999?text='+txt,'_blank');
+ let txt=`*QuickKhaana Bijapur - ${sel}*%0A%0A${msg}%0A*Total: Rs ${t}*%0A%0A_Delivery Address:_ `;
+ window.open('https://wa.me/918073049760?text='+txt,'_blank');
 }
 render();
 </script>
